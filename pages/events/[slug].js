@@ -5,7 +5,7 @@ import Image from "next/image";
 import { API_URL } from "@/config/index";
 import styles from "@/styles/Event.module.css";
 
-export default function EventPage({ evt, events }) {
+export default function EventPage({ evt }) {
   const deleteEvent = async id => {
     const res = await fetch(`${API_URL}/api/events/${id}`, {
       method: "DELETE",
@@ -33,7 +33,7 @@ export default function EventPage({ evt, events }) {
         {attributes.image && (
           <div className={styles.image}>
             <Image
-              src={events.attributes[0].image.data.attributes.formats.thumbnail.url}
+              src={attributes.image.data.attributes.formats.thumbnail.url}
               width={960}
               height={600}
               alt="event image"
@@ -62,8 +62,6 @@ export async function getStaticPaths() {
   const json = await res.json();
   const events = json.data;
 
-  console.log('From getStaticPaths', events)
-
   const paths = events.map(evt => ({
     params: { slug: evt.attributes.slug},
   }));
@@ -72,10 +70,9 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params: { slug }}) {
-  const res = await fetch(`${API_URL}/api/events?filters[slug]=${slug}`);
+  const res = await fetch(`${API_URL}/api/events?filters[slug]=${slug}&populate=*`);
   const json = await res.json();
   const events = json.data;
-  {console.log('json', events)}
   return {
     props: {
       evt: events[0],
