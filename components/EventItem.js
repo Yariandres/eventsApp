@@ -3,22 +3,24 @@ import Image from "next/image";
 import styles from "@/styles/EventItem.module.css";
 
 export default function EventItem({ evt }) {
+  const { attributes } = evt;
+
   return (
     <div className={styles.event}>
       <div className={styles.img}>
         <Image
-          src={evt.image ? evt.image : "/images/event-default.png"}
+          src={attributes.image ? attributes.image.data.attributes.formats.thumbnail.url : "/images/event-default.png"}
           alt={evt.title}
           width={170}
           height={100}
         />
       </div>
       <div className={styles.info}>
-        <span>{evt.date} at {evt.time}</span>
-        <h3>{evt.name}</h3>
+        <span>{new Date(attributes.date).toLocaleDateString('en-GB')} at {attributes.time}</span>
+        <h3>{attributes.name}</h3>
       </div>
       <div className={styles.link}>
-        <Link href={`/events/${evt.slug}`}>
+        <Link href={`/events/${attributes.slug}`}>
           <a className="btn">View Details</a>
         </Link>
       </div>
