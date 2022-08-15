@@ -33,7 +33,7 @@ export default function EventPage({ evt }) {
         {attributes.image && (
           <div className={styles.image}>
             <Image
-              src={attributes.image.data.attributes.formats.thumbnail.url}
+              src={attributes.image.data.attributes.formats.large.url}
               width={960}
               height={600}
               alt="event image"
@@ -61,6 +61,7 @@ export async function getStaticPaths() {
   const res = await fetch(`${API_URL}/api/events?[populate]=*`);
   const json = await res.json();
   const events = json.data;
+
 
   const paths = events.map(evt => ({
     params: { slug: evt.attributes.slug},
