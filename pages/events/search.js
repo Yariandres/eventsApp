@@ -50,7 +50,7 @@ export async function getServerSideProps({query: { term }}) {
       },
     },
     {
-      encode: false,
+      encodeValuesOnly: true, // prettify URL
     }
   );
 
